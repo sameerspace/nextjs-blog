@@ -13,12 +13,11 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page') || 1);
 
-
   const createPageURL = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page',pageNumber.toString());
-    return `${pathname}?${params.toString()}`
-  }
+    params.set('page', pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
+  };
 
   const allPages = generatePagination(currentPage, totalPages);
 
@@ -26,7 +25,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
     <>
       {/* NOTE: comment in this code when you get to this point in the course */}
 
-      {/* <div className="inline-flex">
+      <div className="inline-flex">
         <PaginationArrow
           direction="left"
           href={createPageURL(currentPage - 1)}
@@ -59,7 +58,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
           href={createPageURL(currentPage + 1)}
           isDisabled={currentPage >= totalPages}
         />
-      </div> */}
+      </div>
     </>
   );
 }
@@ -129,21 +128,3 @@ function PaginationArrow({
     </Link>
   );
 }
-
-
-/*
-# Copy from .env.local on the Vercel dashboard
-# https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database
-POSTGRES_URL="postgres://default:hvEQP86egLAS@ep-silent-snow-99884107-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-POSTGRES_PRISMA_URL="postgres://default:hvEQP86egLAS@ep-silent-snow-99884107-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
-POSTGRES_URL_NON_POOLING="postgres://default:hvEQP86egLAS@ep-silent-snow-99884107.us-east-1.postgres.vercel-storage.com:5432/verceldb"
-POSTGRES_USER="default"
-POSTGRES_HOST="ep-silent-snow-99884107-pooler.us-east-1.postgres.vercel-storage.com"
-POSTGRES_PASSWORD="hvEQP86egLAS"
-POSTGRES_DATABASE="verceldb"
-
-# `openssl rand -base64 32`
-AUTH_SECRET=
-AUTH_URL=http://localhost:3000/api/auth
-
-*/
