@@ -4,11 +4,23 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { generatePagination } from '@/app/lib/utils';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export default function Pagination({ totalPages }: { totalPages: number }) {
   // NOTE: comment in this code when you get to this point in the course
 
-  // const allPages = generatePagination(currentPage, totalPages);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page') || 1);
+
+
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page',pageNumber.toString());
+    return `${pathname}?${params.toString()}`
+  }
+
+  const allPages = generatePagination(currentPage, totalPages);
 
   return (
     <>
@@ -117,3 +129,21 @@ function PaginationArrow({
     </Link>
   );
 }
+
+
+/*
+# Copy from .env.local on the Vercel dashboard
+# https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database
+POSTGRES_URL="postgres://default:hvEQP86egLAS@ep-silent-snow-99884107-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+POSTGRES_PRISMA_URL="postgres://default:hvEQP86egLAS@ep-silent-snow-99884107-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
+POSTGRES_URL_NON_POOLING="postgres://default:hvEQP86egLAS@ep-silent-snow-99884107.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+POSTGRES_USER="default"
+POSTGRES_HOST="ep-silent-snow-99884107-pooler.us-east-1.postgres.vercel-storage.com"
+POSTGRES_PASSWORD="hvEQP86egLAS"
+POSTGRES_DATABASE="verceldb"
+
+# `openssl rand -base64 32`
+AUTH_SECRET=
+AUTH_URL=http://localhost:3000/api/auth
+
+*/
